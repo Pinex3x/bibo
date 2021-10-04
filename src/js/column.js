@@ -55,7 +55,7 @@ export class Column {
     this.change = this.section.querySelector('.change');
   }
   renderContent(info) {
-    let { ps = 12, cid } = info;
+    let { ps = 13, cid } = info;
     Promise.all([
       axios.get(columnAPI, { params: { ps } }),
       axios.get(columnRankAPI, { params: { cid } }),
@@ -64,7 +64,6 @@ export class Column {
         this.bindEvent(info);
         this.renderColumns(res[0].data);
         this.renderList(res[1].data);
-        this.change.classList.remove('active');
       })
       .catch((err) => {
         console.log('数据获取失败');
@@ -86,6 +85,7 @@ export class Column {
         })
       )
       .join('');
+    this.change.classList.remove('active');
   }
   renderList(list) {
     let rank = this.section.querySelector('.ranklist');
@@ -107,14 +107,14 @@ export class Column {
     utils.adjustLists();
   }
   bindEvent(info) {
-    let { ps } = info;
+    let { ps = 13 } = info;
     this.section.addEventListener('click', (e) => {
       if (e.path.includes(this.change)) {
         this.change.classList.add('active');
         axios
           .get(columnAPI, { params: { ps } })
           .then((res) => {
-            this.renderColumns(res[0].data);
+            this.renderColumns(res.data);
           })
           .catch((err) => {
             console.log('数据获取失败');

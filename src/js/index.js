@@ -12,7 +12,7 @@ import { Live } from './live';
 import { Section } from './section';
 import { Manga } from './manga';
 import { Column } from './column';
-import { liveAPI, preAPI, danmuAPI } from './api';
+import { liveAPI, preAPI, danmuAPI, rcmdAPI } from './api';
 
 ~(function main() {
   // 动态banner
@@ -75,8 +75,11 @@ import { liveAPI, preAPI, danmuAPI } from './api';
   new TopSwiper('#swiper', '/swiper.json');
   // 推荐视频
   let recommend = document.querySelector('.recommend');
-  axios.get('recommend.json').then((res) => {
-    let data = res.data;
+  let rcmdVideos = recommend.querySelector('.videos');
+  let changeBtn = recommend.querySelector('.change');
+
+  const renderRcmd = (result) => {
+    let data = result.data;
     let videoStr = data.item
       .map((video) => {
         return utils.Video('recommend', {
@@ -89,16 +92,11 @@ import { liveAPI, preAPI, danmuAPI } from './api';
         });
       })
       .join('');
-    recommend.innerHTML = ` 
-    <div class="change">
-      <i class="bilifont bili-icon_caozuo_huanyihuan"></i>
-      <span>换一换</span>
-    </div>
-    <div class="videoArea">
-      <div class="videos">${videoStr}</div>
-    </div>`;
+    rcmdVideos.innerHTML = videoStr;
     utils.adjustVideos();
-  });
+    changeBtn.classList.remove('active');
+  };
+  axios.get('recommend.json').then((res) => renderRcmd(res));
   // 推广
   let adVideos = document.querySelector('#ads .videos');
   axios.get('ad.json').then((res) => {
@@ -643,6 +641,14 @@ import { liveAPI, preAPI, danmuAPI } from './api';
   });
   document.addEventListener('click', sort);
   document.addEventListener('click', fastJump);
+  document.addEventListener('click', (e) => {
+    if (e.path.includes(changeBtn)) {
+      changeBtn.classList.add('active');
+      axios
+        .get(rcmdAPI, { params: { fresh_type: 3 } })
+        .then((res) => renderRcmd(res));
+    }
+  });
   document.addEventListener('mouseover', utils.bindShowCard);
   document.addEventListener('mouseover', preview);
 })();

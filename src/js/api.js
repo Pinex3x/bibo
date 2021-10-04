@@ -1,3 +1,4 @@
+const rcmdAPI = 'https://api.bilibili.com/x/web-interface/index/top/rcmd';
 const regionAPI = 'https://api.bilibili.com/x/web-interface/dynamic/region';
 const rankAPI = 'https://api.bilibili.com/x/web-interface/ranking/region';
 const liveAPI =
@@ -26,6 +27,7 @@ const imgsrc = './src/img';
 const imgsrcol = 'https://pinewe.oss-cn-shanghai.aliyuncs.com/pic_bed/img';
 
 export {
+  rcmdAPI,
   regionAPI,
   rankAPI,
   liveAPI,
