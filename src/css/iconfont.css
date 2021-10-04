@@ -1,0 +1,123 @@
+@font-face {
+  font-family: custom-navbar-font;
+  src: url(//s1.hdslb.com/bfs/seed/jinkela/header/asserts/iconfont.ttf)
+    format('truetype');
+}
+@font-face {
+  font-family: custom-navbar-font-extended;
+  src: url(//s1.hdslb.com/bfs/static/jinkela/video/asserts/iconfont.4bab144.ttf)
+    format('truetype');
+}
+@font-face {
+  font-family: custom-navbar-font-new-home;
+  src: url(//s1.hdslb.com/bfs/seed/jinkela/header-v2/asserts/iconfont.ttf)
+    format('truetype');
+}
+.iconfont,
+.iconfont-extended,
+.iconfont-new-home {
+  color: inherit;
+  font-family: custom-navbar-font !important;
+  font-size: 24px;
+  font-style: normal;
+}
+.iconfont-extended {
+  font-family: custom-navbar-font-extended !important;
+}
+.iconfont-new-home {
+  font-family: custom-navbar-font-new-home !important;
+}
+.icon-logo::before {
+  content: '';
+}
+.icon-lv0::before {
+  content: '';
+  color: #9a9a9a;
+}
+.icon-lv1::before {
+  content: '';
+  color: #646464;
+}
+.dark .icon-lv0::before {
+  color: #777;
+}
+.dark .icon-lv1::before {
+  color: #ddd;
+}
+.icon-lv2::before {
+  content: '';
+  color: #1bc861;
+}
+.icon-lv3::before {
+  content: '';
+  color: #22baea;
+}
+.icon-lv4::before {
+  content: '';
+  color: #eaa722;
+}
+.icon-lv5::before {
+  content: '';
+  color: #ff7631;
+}
+.icon-lv6::before {
+  content: '';
+  color: #ff3131;
+}
+.icon-profile::before {
+  content: '';
+}
+.icon-posts::before {
+  content: '';
+}
+.icon-wallet::before {
+  content: '';
+}
+.icon-live-center::before {
+  content: '';
+}
+.icon-order-center::before {
+  content: '';
+}
+.icon-logout::before {
+  content: '';
+}
+.icon-ok::before {
+  content: '';
+}
+.icon-cancel::before {
+  content: '';
+}
+.icon-bind-phone::before {
+  content: '';
+}
+.icon-bind-email::before {
+  content: '';
+}
+.icon-coin::before {
+  content: '';
+}
+.icon-b-coin::before {
+  content: '';
+}
+.icon-activity::before {
+  content: '';
+}
+.icon-message::before {
+  content: '';
+}
+.icon-favorite::before {
+  content: '';
+}
+.icon-history::before {
+  content: '';
+}
+.icon-vip::before {
+  content: '';
+}
+.icon-course::before {
+  content: '';
+}
+[class^='icon-lv']::before {
+  font-size: 24px;
+}

@@ -1,0 +1,16 @@
+html {
+  overflow: overlay;
+}
+html ::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+html ::-webkit-resizer,
+html ::-webkit-scrollbar-thumb {
+  background: #aaa;
+  border-radius: 3px;
+}
+html ::-webkit-scrollbar-corner,
+html ::-webkit-scrollbar-track {
+  background: 0 0;
+}

@@ -1,0 +1,16 @@
+html {
+  overflow: overlay; // 只有chrome生效
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-resizer,
+  ::-webkit-scrollbar-thumb {
+    background: #aaa;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-corner,
+  ::-webkit-scrollbar-track {
+    background: 0 0;
+  }
+}
