@@ -589,19 +589,25 @@ import { liveAPI, preAPI, danmuAPI, rcmdAPI } from './api';
           setInterval(runningFn[index], delay)
         );
       }
+      if (controller != undefined) return;
       controller = setInterval(() => {
         lineAry = lineAry.map((len) => (len - 100 < 0 ? 0 : len - 100));
         if (danmus.length > 0) {
           addDanmu(danmus, runningTimer);
-        } else clearInterval(controller);
+        } else {
+          clearInterval(controller);
+          controller = null;
+        }
       }, delay);
     };
     // 暂停滚动
     const pause = () => {
       running = false;
       clearInterval(controller);
-      runningTimer.forEach((timer) => {
+      controller = null;
+      runningTimer.map((timer) => {
         clearInterval(timer);
+        timer = null;
       });
     };
 

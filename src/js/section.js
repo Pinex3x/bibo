@@ -42,7 +42,7 @@ export class Section {
               <svg class="icon">
               <use xlink:href="${imgsrc}/bibo.svg#${info.tag}"></use>
               </svg>
-              <a href="https://www.bilibili.com/v/${
+              <a href="https://www.bilibili.com/${
                 info.tag
               }" target="_blank" class="title">${info.name}</a>
               <ul class="week">
@@ -76,7 +76,7 @@ export class Section {
         <section class="section">
           <section class="left">
             <h2 class="subarea-title"> 
-              <a href="https://www.bilibili.com/v/${
+              <a href="https://www.bilibili.com/${
                 info.tag
               }" target="_blank" class="title">${info.subtitle}</a>
               <div class="change active">
@@ -84,7 +84,7 @@ export class Section {
                 <span>换一换</span>
               </div>
               <div class="more">
-                <a href="https://www.bilibili.com/v/${
+                <a href="https://www.bilibili.com/${
                   info.tag
                 }" target="_blank">更多</a>
                 <i class="bilifont bili-icon_caozuo_qianwang"></i>
