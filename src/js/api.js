@@ -5,6 +5,7 @@ const liveAPI =
   'https://api.live.bilibili.com/xlive/web-interface/v1/webMain/getList?platform=web';
 const changeAPI =
   'https://api.live.bilibili.com/xlive/web-interface/v1/webMain/getMoreRecList?platform=web';
+const videoInfoAPI = 'http://api.bilibili.com/x/web-interface/view';
 const preAPI = 'http://api.bilibili.com/pvideo';
 const danmuAPI = 'http://api.bilibili.com/x/v2/dm/ajax';
 const followAPI = '/living-follow.json';
@@ -32,6 +33,7 @@ export {
   rankAPI,
   liveAPI,
   changeAPI,
+  videoInfoAPI,
   preAPI,
   danmuAPI,
   followAPI,

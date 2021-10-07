@@ -907,12 +907,14 @@ a {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin: 0;
   height: 66px;
   color: #999;
 }
 .section .live-list .item .number {
   width: 18px;
   height: 18px;
+  flex-shrink: 0;
   line-height: 18px;
   text-align: center;
   margin-right: 1em;
@@ -1022,7 +1024,7 @@ a {
 }
 .section .top1 .txt {
   flex: 1;
-  padding-left: 1em;
+  padding-left: 0.5em;
   font-size: 0.9rem;
   color: #212121;
   display: flex;
@@ -1127,6 +1129,7 @@ a {
 .section .item .number {
   width: 18px;
   height: 18px;
+  flex-shrink: 0;
   line-height: 18px;
   font-size: 0.9rem;
   color: #999;
@@ -1451,7 +1454,9 @@ a {
   padding: 0;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
   margin-bottom: 10px;
 }
 #manga .top1 .txt {

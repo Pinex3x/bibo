@@ -12,7 +12,7 @@ import { Live } from './live';
 import { Section } from './section';
 import { Manga } from './manga';
 import { Column } from './column';
-import { liveAPI, preAPI, danmuAPI, rcmdAPI } from './api';
+import { liveAPI, videoInfoAPI, preAPI, danmuAPI, rcmdAPI } from './api';
 
 ~(function main() {
   // 动态banner
@@ -226,7 +226,6 @@ import { liveAPI, preAPI, danmuAPI, rcmdAPI } from './api';
           new Live(`#${section.tag}`, liveAPI);
           break;
         case 'manga': // 漫画
-          //  { tag: 'manga', name: '漫画', rid: -1 },
           new Manga(`#${section.tag}`, section);
           break;
         case 'lesson': // 课堂
@@ -440,7 +439,7 @@ import { liveAPI, preAPI, danmuAPI, rcmdAPI } from './api';
     if (!tar.classList.contains('videocut') || tar.classList.contains('loaded'))
       return;
     let aid = tar.getAttribute('data-aid');
-    let time = tar.getAttribute('data-time');
+    let time;
     let size = getComputedStyle(tar);
     size = {
       width: parseFloat(size.width),
@@ -449,9 +448,11 @@ import { liveAPI, preAPI, danmuAPI, rcmdAPI } from './api';
     Promise.all([
       axios.get(preAPI, { params: { aid } }),
       axios.get(danmuAPI, { params: { aid } }),
+      axios.get(videoInfoAPI, { params: { aid } }),
     ])
 
       .then(async (res) => {
+        time = res[2].data.pages[0].duration;
         // 获取预览信息
         let { img_x_len, img_y_len, index, image } = res[0].data;
         let img = utils.proxyUrl(`http:${image[0]}`);

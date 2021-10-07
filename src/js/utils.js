@@ -305,9 +305,7 @@ const Video = (type, info) => {
                       <div class="percent"></div>
                   </div>
                   </div>
-                  <div class="videocut" data-aid="${info.aid}" data-time="${
-        info.time
-      }"><div class="danmu"></div></div>
+                  <div class="videocut" data-aid="${info.aid}"><div class="danmu"></div></div>
                 </div>
                 <div class="watchlater"></div>
                 </div>
@@ -417,9 +415,7 @@ const Video = (type, info) => {
                       <div class="percent"></div>
                   </div>
                   </div>
-                  <div class="videocut" data-aid="${info.aid}" data-time="${
-        info.time
-      }"><div class="danmu"></div></div>
+                  <div class="videocut" data-aid="${info.aid}"><div class="danmu"></div></div>
                 </div>
                 </a>
                 <div class="watchlater"></div>

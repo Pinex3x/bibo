@@ -984,11 +984,13 @@ a {
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        margin: 0;
         height: 66px;
         color: #999;
       }
       .number {
         .size(18px,18px);
+        flex-shrink: 0;
         line-height: 18px;
         text-align: center;
         margin-right: 1em;
@@ -1103,7 +1105,7 @@ a {
     }
     .txt {
       flex: 1;
-      padding-left: 1em;
+      padding-left: 0.5em;
       font-size: @normal;
       color: #212121;
       display: flex;
@@ -1216,6 +1218,7 @@ a {
     }
     .number {
       .size(18px,18px);
+      flex-shrink: 0;
       line-height: 18px;
       font-size: @normal;
       color: #999;
@@ -1465,7 +1468,6 @@ a {
       text-align: center;
       cursor: pointer;
       font-size: @small;
-
       &.active,
       &:hover {
         color: @themecolor80;
@@ -1529,7 +1531,9 @@ a {
       padding: 0;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       margin-bottom: 10px;
     }
     .txt {
