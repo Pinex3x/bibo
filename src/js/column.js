@@ -109,7 +109,8 @@ export class Column {
   bindEvent(info) {
     let { ps = 13 } = info;
     this.section.addEventListener('click', (e) => {
-      if (e.path.includes(this.change)) {
+      let path = e.path || (e.composedPath && e.composedPath());
+      if (path.includes(this.change)) {
         this.change.classList.add('active');
         axios
           .get(columnAPI, { params: { ps } })

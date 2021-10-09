@@ -112,7 +112,8 @@ export class Live {
     let tabList = Array.from(tabBar.querySelectorAll('li'));
     let tabContents = this.live.querySelectorAll('.tab-content li');
     this.live.addEventListener('click', (e) => {
-      if (e.path.includes(this.change)) {
+      let path = e.path || (e.composedPath && e.composedPath());
+      if (path.includes(this.change)) {
         // 换一换
         this.change.classList.add('active');
         axios.get(changeAPI).then((res) => {
@@ -123,7 +124,7 @@ export class Live {
           this.change.classList.remove('active');
         });
       }
-      if (e.path.includes(tabBar)) {
+      if (path.includes(tabBar)) {
         if (e.target.tagName.toUpperCase() !== 'LI') return;
         let name = e.target.dataset.name;
         tabList.forEach((item) => {

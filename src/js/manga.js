@@ -151,7 +151,8 @@ export class Manga {
     this.section.addEventListener('click', (e) => {
       // 选项卡 推荐
       let tar = e.target;
-      if (e.path.includes(mainTab)) {
+      let path = e.path || (e.composedPath && e.composedPath());
+      if (path.includes(mainTab)) {
         if (tar.tagName.toLowerCase() === 'span') tar = tar.parentElement;
         type = tar.dataset.type;
         if (!type) return;
@@ -167,7 +168,7 @@ export class Manga {
         });
       }
       // 选项卡 排行
-      if (e.path.includes(rightTab)) {
+      if (path.includes(rightTab)) {
         if (tar.tagName.toLowerCase() === 'span') tar = tar.parentElement;
         let i = [].indexOf.call(rightTabList, tar);
         listBox.style.transform = `translateX(${-i * width}px)`;
@@ -177,7 +178,7 @@ export class Manga {
         });
       }
       // 换一换
-      if (e.path.includes(this.change)) {
+      if (path.includes(this.change)) {
         this.change.classList.add('active');
         this.page = (this.page % 10) + 1;
         if (type)

@@ -257,12 +257,13 @@ import { liveAPI, videoInfoAPI, preAPI, danmuAPI, rcmdAPI } from './api';
   // 分区排序
   const sort = (e) => {
     if (isSorting) {
-      if (e.path.includes(sortBtn)) return cancelSort();
+      let path = e.path || (e.composedPath && e.composedPath());
+      if (path.includes(sortBtn)) return cancelSort();
       let guidebar = elevator.querySelector('.guidebar');
-      if (e.path.includes(guidebar)) return;
+      if (path.includes(guidebar)) return;
       cancelSort();
     } else {
-      if (e.path.includes(sortBtn)) startSort();
+      if (path.includes(sortBtn)) startSort();
     }
   };
   // 开始排序
@@ -394,18 +395,19 @@ import { liveAPI, videoInfoAPI, preAPI, danmuAPI, rcmdAPI } from './api';
   let topBtn = elevator.querySelector('.totop');
   let flag = true;
   const fastJump = (e) => {
-    if (e.path.includes(topBtn) || e.path.includes(sortList)) {
+    let path = e.path || (e.composedPath && e.composedPath());
+    if (path.includes(topBtn) || path.includes(sortList)) {
       if (!flag) return;
       flag = false;
       let top = 0;
-      if (e.path.includes(sortList)) {
+      if (path.includes(sortList)) {
         let tar = e.target;
         if (tar.tagName.toLowerCase() !== 'li') return;
         let name = tar.dataset.name;
         let index = sectionInfo.findIndex((section) => section.tag === name);
         top = utils.offset(sections[index]).top;
       }
-      if (e.path.includes(topBtn)) scrollTo(top, 100);
+      if (path.includes(topBtn)) scrollTo(top, 100);
       else document.documentElement.scrollTop = top;
       flag = true;
     }
@@ -624,17 +626,20 @@ import { liveAPI, videoInfoAPI, preAPI, danmuAPI, rcmdAPI } from './api';
   utils.throttle('scroll', 'customScroll');
   utils.throttle('resize', 'customResize');
   document.addEventListener('mouseover', (e) => {
-    if (e.path.includes(topbanner)) {
+    let path = e.path || (e.composedPath && e.composedPath());
+    if (path.includes(topbanner)) {
       let startX = e.clientX;
       let width = parseFloat(getComputedStyle(topbanner).width);
       document.addEventListener('mousemove', (e) => {
-        if (e.path.includes(topbanner)) {
+        let path = e.path || (e.composedPath && e.composedPath());
+        if (path.includes(topbanner)) {
           let percent = (e.clientX - startX) / width;
           vedio.style.left = `${50 + -percent * 2.5}%`;
         }
       });
       document.addEventListener('mouseout', (e) => {
-        if (e.path.includes(topbanner)) {
+        let path = e.path || (e.composedPath && e.composedPath());
+        if (path.includes(topbanner)) {
           vedio.style = ``;
         }
       });
@@ -649,7 +654,8 @@ import { liveAPI, videoInfoAPI, preAPI, danmuAPI, rcmdAPI } from './api';
   document.addEventListener('click', sort);
   document.addEventListener('click', fastJump);
   document.addEventListener('click', (e) => {
-    if (e.path.includes(changeBtn)) {
+    let path = e.path || (e.composedPath && e.composedPath());
+    if (path.includes(changeBtn)) {
       changeBtn.classList.add('active');
       axios
         .get(rcmdAPI, { params: { fresh_type: 3 } })

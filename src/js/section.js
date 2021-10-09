@@ -456,8 +456,9 @@ export class Section {
 
     this.section.addEventListener('click', (e) => {
       let tar = e.target;
+      let path = e.path || (e.composedPath && e.composedPath());
       // 选项卡
-      if (data && e.path.includes(tab)) {
+      if (data && path.includes(tab)) {
         if (tar.tagName.toLowerCase() !== 'li') return;
         let day = tar.dataset.day;
         let info;
@@ -470,7 +471,7 @@ export class Section {
         this.renderWeek(info);
       }
       // 换一换
-      if (e.path.includes(this.change)) {
+      if (path.includes(this.change)) {
         this.change.classList.add('active');
         let api;
         if (type === 'lesson') {
