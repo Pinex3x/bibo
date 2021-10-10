@@ -1,5 +1,8 @@
 html {
-  overflow: overlay; // 只有chrome生效
+  scrollbar-width: thin; /* 火狐滚动条无法自定义宽度，只能通过此属性使滚动条宽度变细 */
+  -ms-overflow-style: none; /* 隐藏滚动条（在IE和Edge两个浏览器中很难更改样式，固采取隐藏方式） */
+
+  overflow: overlay; // 滚动条不占宽度 只有chrome生效
   ::-webkit-scrollbar {
     width: 5px;
     height: 5px;

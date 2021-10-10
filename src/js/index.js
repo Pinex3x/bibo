@@ -256,8 +256,8 @@ import { liveAPI, videoInfoAPI, preAPI, danmuAPI, rcmdAPI } from './api';
   let startY, movingItem, movingIndex, tarIndex, itemH, maxY, minY;
   // 分区排序
   const sort = (e) => {
+    let path = e.path || (e.composedPath && e.composedPath());
     if (isSorting) {
-      let path = e.path || (e.composedPath && e.composedPath());
       if (path.includes(sortBtn)) return cancelSort();
       let guidebar = elevator.querySelector('.guidebar');
       if (path.includes(guidebar)) return;
@@ -436,6 +436,7 @@ import { liveAPI, videoInfoAPI, preAPI, danmuAPI, rcmdAPI } from './api';
     flag = true;
   };
 
+  // 视频预览
   const preview = async (e) => {
     let tar = e.target;
     if (!tar.classList.contains('videocut') || tar.classList.contains('loaded'))
