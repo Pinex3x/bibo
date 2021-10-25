@@ -1,7 +1,7 @@
-import axios from '/node_modules/axios/dist/axios';
-import './http';
-import utils from './utils';
-import { Swiper } from './swiper';
+import axios from '/node_modules/axios/dist/axios'
+import './http'
+import utils from './utils'
+import { Swiper } from './swiper'
 import {
   regionAPI,
   rankAPI,
@@ -12,26 +12,26 @@ import {
   lessonAPI,
   informationAPI,
   imgsrc,
-} from './api';
+} from './api'
 
 export class Section {
   constructor(selector, info) {
-    this.section = document.querySelector(selector);
-    this.videoSize = { width: 206, height: 116 };
+    this.section = document.querySelector(selector)
+    this.videoSize = { width: 206, height: 116 }
     this.ob = new IntersectionObserver(
       (changes) => {
-        let { isIntersecting } = changes[0];
+        let { isIntersecting } = changes[0]
         if (isIntersecting) {
-          this.ob.unobserve(this.section);
+          this.ob.unobserve(this.section)
           // 渲染骨架
-          this.render(info);
+          this.render(info)
           // 渲染内容
-          this.renderContent(info);
+          this.renderContent(info)
         }
       },
       { threshold: [0] }
-    );
-    this.ob.observe(this.section);
+    )
+    this.ob.observe(this.section)
   }
   render(info) {
     if (info.type === 'anime' || info.type === 'guochuang') {
@@ -42,9 +42,7 @@ export class Section {
               <svg class="icon">
               <use xlink:href="${imgsrc}/bibo.svg#${info.tag}"></use>
               </svg>
-              <a href="https://www.bilibili.com/${
-                info.tag
-              }" target="_blank" class="title">${info.name}</a>
+              <a href="https://www.bilibili.com/${info.tag}" target="_blank" class="title">${info.name}</a>
               <ul class="week">
                 <li class="active" data-day="-1">最新</li>
                 <li data-day="0">周一</li>
@@ -64,9 +62,7 @@ export class Section {
               <h2 class="subarea-title">
               <span class="title">排行榜</span>
               <div class="more">
-                <a href="https://www.bilibili.com/v/popular/rank/${
-                  info.tag
-                }" target="_blank">更多</a>
+                <a href="https://www.bilibili.com/v/popular/rank/${info.tag}" target="_blank">更多</a>
                 <i class="bilifont bili-icon_caozuo_qianwang"></i>
               </div>
               </h2>
@@ -76,17 +72,13 @@ export class Section {
         <section class="section">
           <section class="left">
             <h2 class="subarea-title"> 
-              <a href="https://www.bilibili.com/${
-                info.tag
-              }" target="_blank" class="title">${info.subtitle}</a>
+              <a href="https://www.bilibili.com/${info.tag}" target="_blank" class="title">${info.subtitle}</a>
               <div class="change active">
                 <i class="bilifont bili-icon_caozuo_huanyihuan"></i>
                 <span>换一换</span>
               </div>
               <div class="more">
-                <a href="https://www.bilibili.com/${
-                  info.tag
-                }" target="_blank">更多</a>
+                <a href="https://www.bilibili.com/${info.tag}" target="_blank">更多</a>
                 <i class="bilifont bili-icon_caozuo_qianwang"></i>
               </div>
             </h2>
@@ -115,8 +107,8 @@ export class Section {
           }
           </section>
         </section>
-      </section>`;
-      this.section.innerHTML = str;
+      </section>`
+      this.section.innerHTML = str
     } else
       this.section.innerHTML = `
         <section class="left">
@@ -124,17 +116,13 @@ export class Section {
             <svg class="icon">
             <use xlink:href="${imgsrc}/bibo.svg#${info.tag}"></use>
             </svg>
-            <a href="https://www.bilibili.com/v/${
-              info.tag
-            }" target="_blank" class="title">${info.name}</a>
+            <a href="https://www.bilibili.com/v/${info.tag}" target="_blank" class="title">${info.name}</a>
             <div class="change active">
               <i class="bilifont bili-icon_caozuo_huanyihuan"></i>
               <span>换一换</span>
             </div>
             <div class="more">
-              <a href="https://www.bilibili.com/v/${
-                info.tag
-              }" target="_blank" >更多</a>
+              <a href="https://www.bilibili.com/v/${info.tag}" target="_blank" >更多</a>
               <i class="bilifont bili-icon_caozuo_qianwang"></i>
             </div>
           </h2>
@@ -158,12 +146,12 @@ export class Section {
           }
           </h2>
           <ul class="ranklist"></ul>
-        </section>`;
-    return;
+        </section>`
+    return
   }
   renderContent(info) {
-    this.change = this.section.querySelector('.change');
-    let { rid, ps = 12, season_type, type } = info;
+    this.change = this.section.querySelector('.change')
+    let { rid, ps = 12, season_type, type } = info
     switch (type) {
       case 'anime':
         Promise.all([
@@ -178,19 +166,19 @@ export class Section {
           axios.get(gcSwiperAPI, { params: { position_id: 104 } }),
         ])
           .then((res) => {
-            this.bindEvent(res[0].result, info);
-            this.renderWeek(res[0].result.latest);
-            this.renderList(res[1].result.list, type);
-            this.renderVideos(res[2], type);
-            this.renderSwiper(res[3]);
+            this.bindEvent(res[0].result, info)
+            this.renderWeek(res[0].result.latest)
+            this.renderList(res[1].result.list, type)
+            this.renderVideos(res[2], type)
+            this.renderSwiper(res[3])
           })
           .catch((err) => {
-            console.log('数据获取失败');
-            console.log(err);
-          });
-        break;
+            console.log('数据获取失败')
+            console.log(err)
+          })
+        break
       case 'guochuang':
-        let list = this.section.querySelectorAll('.ranklist');
+        let list = this.section.querySelectorAll('.ranklist')
         Promise.all([
           axios.get(animeAPI, { params: { season_type } }),
           axios.get(txtRankAPI, { params: { season_type } }),
@@ -203,43 +191,43 @@ export class Section {
           axios.get(rankAPI, { params: { rid } }),
         ])
           .then((res) => {
-            this.bindEvent(res[0].result, info);
-            this.renderWeek(res[0].result.latest);
-            this.renderList(res[1].data.list, 'anime', list[0]);
-            this.renderVideos(res[2], type);
-            this.renderList(res[3].data, 'video', list[1]);
+            this.bindEvent(res[0].result, info)
+            this.renderWeek(res[0].result.latest)
+            this.renderList(res[1].data.list, 'anime', list[0])
+            this.renderVideos(res[2], type)
+            this.renderList(res[3].data, 'video', list[1])
           })
           .catch((err) => {
-            console.log('数据获取失败');
-            console.log(err);
-          });
-        break;
+            console.log('数据获取失败')
+            console.log(err)
+          })
+        break
       case 'lesson':
         axios
           .get(lessonAPI)
           .then((res) => {
-            this.bindEvent(null, info);
-            this.renderVideos(res, type);
-            this.renderList(null, type);
+            this.bindEvent(null, info)
+            this.renderVideos(res, type)
+            this.renderList(null, type)
           })
           .catch((err) => {
-            console.log('数据获取失败');
-            console.log(err);
-          });
-        break;
+            console.log('数据获取失败')
+            console.log(err)
+          })
+        break
       case 'information':
         axios
           .get(informationAPI, { params: { ps: 12, rid } })
           .then((res) => {
-            this.bindEvent(null, info);
-            this.renderVideos(res, type);
-            this.renderList(null, type);
+            this.bindEvent(null, info)
+            this.renderVideos(res, type)
+            this.renderList(null, type)
           })
           .catch((err) => {
-            console.log('数据获取失败');
-            console.log(err);
-          });
-        break;
+            console.log('数据获取失败')
+            console.log(err)
+          })
+        break
       case 'movie':
         Promise.all([
           axios.get(regionAPI, {
@@ -251,19 +239,19 @@ export class Section {
           axios.get(txtRankAPI, { params: { season_type } }),
         ])
           .then((res) => {
-            let list;
+            let list
             if (res[1].data) {
-              list = res[1].data.list || res[1].data.items || res[1].data;
-            } else list = res[1].result;
-            this.bindEvent(null, info);
-            this.renderVideos(res[0], type);
-            this.renderList(list, type);
+              list = res[1].data.list || res[1].data.items || res[1].data
+            } else list = res[1].result
+            this.bindEvent(null, info)
+            this.renderVideos(res[0], type)
+            this.renderList(list, type)
           })
           .catch((err) => {
-            console.log('数据获取失败');
-            console.log(err);
-          });
-        break;
+            console.log('数据获取失败')
+            console.log(err)
+          })
+        break
       default:
         Promise.all([
           axios.get(regionAPI, {
@@ -275,26 +263,26 @@ export class Section {
           axios.get(rankAPI, { params: { rid } }),
         ])
           .then((res) => {
-            let list;
+            let list
             if (res[1].data) {
-              list = res[1].data.list || res[1].data.items || res[1].data;
-            } else list = res[1].result;
-            this.bindEvent(null, info);
-            this.renderVideos(res[0], type);
-            this.renderList(list, type);
+              list = res[1].data.list || res[1].data.items || res[1].data
+            } else list = res[1].result
+            this.bindEvent(null, info)
+            this.renderVideos(res[0], type)
+            this.renderList(list, type)
           })
           .catch((err) => {
-            console.log('数据获取失败');
-            console.log(err);
-          });
-        break;
+            console.log('数据获取失败')
+            console.log(err)
+          })
+        break
     }
   }
   renderVideos(data, type = 'video') {
-    let videos = this.section.querySelector('.videos');
-    let videoList, videoStr;
+    let videos = this.section.querySelector('.videos')
+    let videoList, videoStr
     if (type === 'information') {
-      videoList = Array.from(data.data.items);
+      videoList = Array.from(data.data.items)
       videoStr = videoList
         .map((video) => {
           return utils.Video('mix', {
@@ -308,11 +296,11 @@ export class Section {
             crown: '',
             up: video.author.name,
             uplink: `https://space.bilibili.com/${video.author.mid}/`,
-          });
+          })
         })
-        .join('');
+        .join('')
     } else if (type === 'lesson') {
-      videoList = Array.from(data.data.season);
+      videoList = Array.from(data.data.season)
       videoStr = videoList
         .map((video) => {
           return utils.Video('lesson', {
@@ -321,11 +309,11 @@ export class Section {
             title: video.title,
             play: utils.handleNumber(video.play),
             updateinfo: video.update_info,
-          });
+          })
         })
-        .join('');
+        .join('')
     } else {
-      videoList = Array.from(data.data.archives);
+      videoList = Array.from(data.data.archives)
       videoStr = videoList
         .map((video) => {
           return utils.Video('mix', {
@@ -336,25 +324,20 @@ export class Section {
             play: utils.handleNumber(video.stat.view),
             like: utils.handleNumber(video.stat.like),
             time: video.duration,
-            crown:
-              video.stat.coin < 2000
-                ? ''
-                : video.stat.coin < 10000
-                ? 'silver'
-                : 'gold',
+            crown: video.stat.coin < 2000 ? '' : video.stat.coin < 10000 ? 'silver' : 'gold',
             up: video.owner.name,
             uplink: `https://space.bilibili.com/${video.owner.mid}/`,
-          });
+          })
         })
-        .join('');
+        .join('')
     }
-    this.change.classList.remove('active');
-    videos.innerHTML = videoStr;
-    utils.adjustVideos();
+    this.change.classList.remove('active')
+    videos.innerHTML = videoStr
+    utils.adjustVideos()
   }
   renderList(list, type = 'video', listEle) {
-    listEle = listEle || this.section.querySelector('.ranklist');
-    let rankStr;
+    listEle = listEle || this.section.querySelector('.ranklist')
+    let rankStr
     if (type === 'video') {
       rankStr = [...list]
         .map((video, index) => {
@@ -370,9 +353,9 @@ export class Section {
             danmaku: utils.handleNumber(video.review),
             favor: utils.handleNumber(video.favorites),
             coin: utils.handleNumber(video.coins),
-          });
+          })
         })
-        .join('');
+        .join('')
     }
     if (type === 'movie' || type === 'anime') {
       rankStr = [...list]
@@ -386,9 +369,9 @@ export class Section {
             danmaku: utils.handleNumber(video.review),
             favor: utils.handleNumber(video.favorites),
             coin: utils.handleNumber(video.coins),
-          });
+          })
         })
-        .join('');
+        .join('')
     }
     if (type === 'lesson') {
       rankStr = `<a href="https://www.bilibili.com/cheese/" target="blank"><img src="${utils.handleImgUrl(
@@ -397,7 +380,7 @@ export class Section {
           width: 320,
           height: 370,
         }
-      )}"></img></a>`;
+      )}"></img></a>`
     }
     if (type === 'information') {
       rankStr = `<a href="https://www.bilibili.com/v/information/" target="_blank"><img src="${utils.handleImgUrl(
@@ -406,35 +389,33 @@ export class Section {
           width: 320,
           height: 400,
         }
-      )}"></img></a>`;
+      )}"></img></a>`
     }
-    listEle.innerHTML = rankStr;
-    utils.adjustLists();
+    listEle.innerHTML = rankStr
+    utils.adjustLists()
   }
   renderWeek(data) {
-    let animes = this.section.querySelector('.animes');
+    let animes = this.section.querySelector('.animes')
     if (!data.length) {
-      animes.innerHTML = '<span>今天没有番剧更新</span>';
-      animes.classList.add('no-data');
-      return;
+      animes.innerHTML = '<span>今天没有番剧更新</span>'
+      animes.classList.add('no-data')
+      return
     }
-    animes.classList.remove('no-data');
+    animes.classList.remove('no-data')
     animes.innerHTML = data
       .map(
         (anime) =>
           `<div class="animecard">
             <img src="${utils.handleImgUrl(anime.square_cover)}">
             <p class="detail">
-              <a href="https://www.bilibili.com/bangumi/play/ss${
-                anime.seaason_id
-              } target="_blank"/">${anime.title}</a>
-              <a href="https://www.bilibili.com/bangumi/play/ss${
-                anime.episode_id + 1
-              } target="_blank"/" class='pub'>${anime.pub_index}</a>
+              <a href="https://www.bilibili.com/bangumi/play/ss${anime.seaason_id} target="_blank"/">${anime.title}</a>
+              <a href="https://www.bilibili.com/bangumi/play/ss${anime.episode_id + 1} target="_blank"/" class='pub'>${
+            anime.pub_index
+          }</a>
             </p>
           </div>`
       )
-      .join('');
+      .join('')
   }
   renderSwiper(data) {
     let swiperData = data.result.map((item) => {
@@ -442,52 +423,52 @@ export class Section {
         link: item.link || item.blink,
         img: item.pic || item.img || item.cover,
         title: item.title,
-      };
-    });
-    new Swiper(this.section.querySelector('.swiper'), swiperData);
+      }
+    })
+    new Swiper(this.section.querySelector('.swiper'), swiperData)
   }
   bindEvent(data, info) {
-    let { type, rid, ps = 12 } = info;
-    let tab, tabList;
+    let { type, rid, ps = 12 } = info
+    let tab, tabList
     if (data !== null) {
-      tab = this.section.querySelector('.week');
-      tabList = tab.querySelectorAll('li');
+      tab = this.section.querySelector('.week')
+      tabList = tab.querySelectorAll('li')
     }
 
     this.section.addEventListener('click', (e) => {
-      let tar = e.target;
-      let path = e.path || (e.composedPath && e.composedPath());
+      let tar = e.target
+      let path = e.path || (e.composedPath && e.composedPath())
       // 选项卡
       if (data && path.includes(tab)) {
-        if (tar.tagName.toLowerCase() !== 'li') return;
-        let day = tar.dataset.day;
-        let info;
-        if (day < 0) info = data.latest;
-        else info = data.timeline[day].episodes;
+        if (tar.tagName.toLowerCase() !== 'li') return
+        let day = tar.dataset.day
+        let info
+        if (day < 0) info = data.latest
+        else info = data.timeline[day].episodes
         tabList.forEach((item) => {
-          if (item === tar) item.classList.add('active');
-          else item.classList.remove('active');
-        });
-        this.renderWeek(info);
+          if (item === tar) item.classList.add('active')
+          else item.classList.remove('active')
+        })
+        this.renderWeek(info)
       }
       // 换一换
       if (path.includes(this.change)) {
-        this.change.classList.add('active');
-        let api;
+        this.change.classList.add('active')
+        let api
         if (type === 'lesson') {
-          api = lessonAPI;
+          api = lessonAPI
           axios
             .get(api)
             .then((res) => {
-              this.renderVideos(res, type);
+              this.renderVideos(res, type)
             })
             .catch((err) => {
-              console.log('数据获取失败');
-              console.log(err);
-            });
+              console.log('数据获取失败')
+              console.log(err)
+            })
         } else {
-          if (type === 'information') api = informationAPI;
-          else api = regionAPI;
+          if (type === 'information') api = informationAPI
+          else api = regionAPI
           axios
             .get(regionAPI, {
               params: {
@@ -496,14 +477,14 @@ export class Section {
               },
             })
             .then((res) => {
-              this.renderVideos(res, type);
+              this.renderVideos(res, type)
             })
             .catch((err) => {
-              console.log('数据获取失败');
-              console.log(err);
-            });
+              console.log('数据获取失败')
+              console.log(err)
+            })
         }
       }
-    });
+    })
   }
 }

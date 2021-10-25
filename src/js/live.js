@@ -1,34 +1,34 @@
-import axios from '/node_modules/axios/dist/axios';
-import './http';
-import utils from './utils';
-import { Swiper } from './swiper';
-import { changeAPI, followAPI, imgsrc } from './api';
+import axios from '/node_modules/axios/dist/axios'
+import './http'
+import utils from './utils'
+import { Swiper } from './swiper'
+import { changeAPI, followAPI, imgsrc } from './api'
 
 export class Live {
   constructor(selector, url, styles) {
-    this.live = document.querySelector(selector);
-    this.size = { width: 44, height: 44 };
+    this.live = document.querySelector(selector)
+    this.size = { width: 44, height: 44 }
     this.ob = new IntersectionObserver(
       (changes) => {
-        let { isIntersecting } = changes[0];
+        let { isIntersecting } = changes[0]
         if (isIntersecting) {
-          this.render();
+          this.render()
           axios
             .get(url)
             .then((res) => {
-              this.render(res.data, styles);
-              this.bindEvent(res.data);
-              this.ob.unobserve(this.live);
+              this.render(res.data, styles)
+              this.bindEvent(res.data)
+              this.ob.unobserve(this.live)
             })
             .catch((err) => {
-              console.log('数据获取失败');
-              console.log(err);
-            });
+              console.log('数据获取失败')
+              console.log(err)
+            })
         }
       },
       { threshold: [0] }
-    );
-    this.ob.observe(this.live);
+    )
+    this.ob.observe(this.live)
   }
   render(data, styles) {
     styles = {
@@ -39,7 +39,7 @@ export class Live {
       videoW: 206,
       videoH: 194,
       ...styles,
-    };
+    }
     // 渲染骨架
     if (!data) {
       this.live.innerHTML = `
@@ -84,63 +84,60 @@ export class Live {
               </div>
             </li>
           </ul>
-        </section>`;
-      return;
+        </section>`
+      return
     }
     // 渲染内容
-    this.living = this.live.querySelector('.description span');
-    this.change = this.live.querySelector('.change');
-    this.recommend = this.live.querySelector('.videos');
-    this.rank = this.live.querySelector('.live-list');
-    this.living.innerText = data.online_total;
-    this.change.classList.remove('active');
+    this.living = this.live.querySelector('.description span')
+    this.change = this.live.querySelector('.change')
+    this.recommend = this.live.querySelector('.videos')
+    this.rank = this.live.querySelector('.live-list')
+    this.living.innerText = data.online_total
+    this.change.classList.remove('active')
     // 直播推荐
-    this.recommend.innerHTML = this.liveRecommend(data.recommend_room_list);
+    this.recommend.innerHTML = this.liveRecommend(data.recommend_room_list)
     // 排行榜
-    this.rank.innerHTML = this.liveRank(data.ranking_list);
-    utils.adjustVideos();
+    this.rank.innerHTML = this.liveRank(data.ranking_list)
+    utils.adjustVideos()
   }
 
   bindEvent(data) {
     // 轮播图
     let swiperData = data.preview_banner_list.map((item) => {
-      return { link: item.link, img: item.pic, title: item.title };
-    });
-    new Swiper('#live-swiper', swiperData);
+      return { link: item.link, img: item.pic, title: item.title }
+    })
+    new Swiper('#live-swiper', swiperData)
     // 选项卡
-    let tabBar = this.live.querySelector('.tab-bar');
-    let tabList = Array.from(tabBar.querySelectorAll('li'));
-    let tabContents = this.live.querySelectorAll('.tab-content li');
+    let tabBar = this.live.querySelector('.tab-bar')
+    let tabList = Array.from(tabBar.querySelectorAll('li'))
+    let tabContents = this.live.querySelectorAll('.tab-content li')
     this.live.addEventListener('click', (e) => {
-      let path = e.path || (e.composedPath && e.composedPath());
+      let path = e.path || (e.composedPath && e.composedPath())
       if (path.includes(this.change)) {
         // 换一换
-        this.change.classList.add('active');
+        this.change.classList.add('active')
         axios.get(changeAPI).then((res) => {
-          this.recommend.innerHTML = this.liveRecommend(
-            res.data.recommend_room_list
-          );
-          utils.adjustVideos();
-          this.change.classList.remove('active');
-        });
+          this.recommend.innerHTML = this.liveRecommend(res.data.recommend_room_list)
+          utils.adjustVideos()
+          this.change.classList.remove('active')
+        })
       }
       if (path.includes(tabBar)) {
-        if (e.target.tagName.toUpperCase() !== 'LI') return;
-        let name = e.target.dataset.name;
+        if (e.target.tagName.toUpperCase() !== 'LI') return
+        let name = e.target.dataset.name
         tabList.forEach((item) => {
-          if (item === e.target) item.classList.add('active');
-          else item.classList.remove('active');
-        });
+          if (item === e.target) item.classList.add('active')
+          else item.classList.remove('active')
+        })
         tabContents.forEach((tabContent) => {
-          if (tabContent.dataset.name === name)
-            tabContent.classList.add('active');
-          else tabContent.classList.remove('active');
-        });
+          if (tabContent.dataset.name === name) tabContent.classList.add('active')
+          else tabContent.classList.remove('active')
+        })
         // 关注列表 (API 需要登录认证)
         if (name === 'following')
           axios.get(followAPI).then((data) => {
-            let followlist = this.live.querySelector('.following');
-            let list = Array.from(data.data.list);
+            let followlist = this.live.querySelector('.following')
+            let list = Array.from(data.data.list)
             let followStr = list
               .map((video) => {
                 return utils.LiveList('follow', {
@@ -149,27 +146,27 @@ export class Live {
                   up: video.uname,
                   avatar: utils.handleImgUrl(video.face, this.size),
                   watching: utils.handleNumber(video.online),
-                });
+                })
               })
-              .join('');
-            followlist.innerHTML = `<ul class="live-list">${followStr}</ul>`;
-          });
+              .join('')
+            followlist.innerHTML = `<ul class="live-list">${followStr}</ul>`
+          })
       }
-    });
+    })
     // 直播预览
     this.live.addEventListener('mouseover', (e) => {
-      let tar = e.target;
+      let tar = e.target
       if (tar.tagName.toLowerCase() === 'img') {
-        let url = tar.getAttribute('data-url');
-        if (!url) return;
-        let img = new Image();
+        let url = tar.getAttribute('data-url')
+        if (!url) return
+        let img = new Image()
         img.onload = () => {
-          tar.src = url;
-          tar.style.opacity = 1;
-        };
-        img.src = url;
+          tar.src = url
+          tar.style.opacity = 1
+        }
+        img.src = url
       }
-    });
+    })
   }
   liveRecommend = (list) => {
     return Array.from(list)
@@ -184,10 +181,10 @@ export class Live {
           tag: video.area_v2_name,
           verified: video.verify.type,
           watching: utils.handleNumber(video.online),
-        });
+        })
       })
-      .join('');
-  };
+      .join('')
+  }
   liveRank = (rank) => {
     return Array.from(rank)
       .map((video, index) => {
@@ -198,9 +195,9 @@ export class Live {
           avatar: utils.handleImgUrl(video.face, this.size),
           watching: utils.handleNumber(video.online),
           rank: index + 1,
-        });
+        })
       })
-      .join('');
-  };
-  liveFollow = (follow) => {};
+      .join('')
+  }
+  liveFollow = (follow) => {}
 }

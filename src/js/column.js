@@ -1,26 +1,26 @@
-import axios from '/node_modules/axios/dist/axios';
-import './http';
-import utils from './utils';
-import { columnAPI, columnRankAPI, imgsrc } from './api';
+import axios from '/node_modules/axios/dist/axios'
+import './http'
+import utils from './utils'
+import { columnAPI, columnRankAPI, imgsrc } from './api'
 
 export class Column {
   constructor(selector, info) {
-    this.section = document.querySelector(selector);
-    this.videoSize = { width: 206, height: 116 };
+    this.section = document.querySelector(selector)
+    this.videoSize = { width: 206, height: 116 }
     this.ob = new IntersectionObserver(
       (changes) => {
-        let { isIntersecting } = changes[0];
+        let { isIntersecting } = changes[0]
         if (isIntersecting) {
-          this.ob.unobserve(this.section);
+          this.ob.unobserve(this.section)
           // 渲染骨架
-          this.render(info);
+          this.render(info)
           // 渲染内容
-          this.renderContent(info);
+          this.renderContent(info)
         }
       },
       { threshold: [0] }
-    );
-    this.ob.observe(this.section);
+    )
+    this.ob.observe(this.section)
   }
   render(info) {
     this.section.innerHTML = `
@@ -51,27 +51,24 @@ export class Column {
           </div>
         </h2>
         <ul class="ranklist"></ul>
-      </section>`;
-    this.change = this.section.querySelector('.change');
+      </section>`
+    this.change = this.section.querySelector('.change')
   }
   renderContent(info) {
-    let { ps = 13, cid } = info;
-    Promise.all([
-      axios.get(columnAPI, { params: { ps } }),
-      axios.get(columnRankAPI, { params: { cid } }),
-    ])
+    let { ps = 13, cid } = info
+    Promise.all([axios.get(columnAPI, { params: { ps } }), axios.get(columnRankAPI, { params: { cid } })])
       .then((res) => {
-        this.bindEvent(info);
-        this.renderColumns(res[0].data);
-        this.renderList(res[1].data);
+        this.bindEvent(info)
+        this.renderColumns(res[0].data)
+        this.renderList(res[1].data)
       })
       .catch((err) => {
-        console.log('数据获取失败');
-        console.log(err);
-      });
+        console.log('数据获取失败')
+        console.log(err)
+      })
   }
   renderColumns(data) {
-    let columns = this.section.querySelector('.columns');
+    let columns = this.section.querySelector('.columns')
     columns.innerHTML = data
       .map((column) =>
         utils.Column({
@@ -84,11 +81,11 @@ export class Column {
           comment: column.stats.reply,
         })
       )
-      .join('');
-    this.change.classList.remove('active');
+      .join('')
+    this.change.classList.remove('active')
   }
   renderList(list) {
-    let rank = this.section.querySelector('.ranklist');
+    let rank = this.section.querySelector('.ranklist')
     rank.innerHTML = list
       .map((column, index) =>
         utils.RankItem('column', {
@@ -103,25 +100,25 @@ export class Column {
           score: utils.handleNumber(column.score),
         })
       )
-      .join('');
-    utils.adjustLists();
+      .join('')
+    utils.adjustLists()
   }
   bindEvent(info) {
-    let { ps = 13 } = info;
+    let { ps = 13 } = info
     this.section.addEventListener('click', (e) => {
-      let path = e.path || (e.composedPath && e.composedPath());
+      let path = e.path || (e.composedPath && e.composedPath())
       if (path.includes(this.change)) {
-        this.change.classList.add('active');
+        this.change.classList.add('active')
         axios
           .get(columnAPI, { params: { ps } })
           .then((res) => {
-            this.renderColumns(res.data);
+            this.renderColumns(res.data)
           })
           .catch((err) => {
-            console.log('数据获取失败');
-            console.log(err);
-          });
+            console.log('数据获取失败')
+            console.log(err)
+          })
       }
-    });
+    })
   }
 }
