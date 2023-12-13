@@ -52,7 +52,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: '哔啵哔啵 (〃∀〃)~ -bibobibo',
-      filename: `${projectName}.html`,
+      filename: `index.html`,
       template: `./index.html`,
       minify: {
         html5: true,
